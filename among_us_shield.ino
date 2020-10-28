@@ -27,7 +27,10 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
-#define ORANGE  0xA233
+#define nORANGE  0xA233
+#define LT_GRAY 0xC618
+#define DK_GRAY 0x7BEF
+#define GRAY    0x7BEF
 
 #define TALK_W  10
 
@@ -39,14 +42,15 @@
 #define SCREEN_H    240
 #define SCREEN_W    320
 
-#define HEAD_OFFS_H  5
-#define HEAD_OFFS_W  5 
+#define HEAD_OFFS_X  10 
 
 
-#define TALK_R1 3
-#define TALK_R2 23
 #define TALK_H  40
-#define TALK_O  3
+#define TALK_O  5
+#define TALK_R1 10
+#define TALK_R2 57
+#define TALK_R3 104
+#define TALK_BEGIN  53
 
 #define TEXT_O  17
 #define HEAD_O  10
@@ -65,13 +69,24 @@ void setup() {
   tft.begin(0x9341);
   tft.setRotation(1);
   tft.fillScreen(BLACK); // Background screen
-  tft.fillRect(TALK_O,TALK_R1+10,SCREEN_W-20,TALK_H,WHITE);
+  tft.fillRect(TALK_O,TALK_R1,SCREEN_W-25,TALK_H,WHITE);
   //tft.drawRect(TALK_O,TALK_R1,SCREEN_W-20,TALK_H,WHITE);
-  tft.setCursor(40,TALK_R1+TEXT_O);
+  tft.setCursor(TALK_BEGIN,TALK_R1+TEXT_O);
   tft.setTextColor(BLACK); // Text color
   tft.setTextSize(2);
   tft.print("yo ryan sus bro"); // Text above the button
-  draw_head(5,5);
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R1);
+
+  tft.fillRect(TALK_O,TALK_R2,SCREEN_W-25,TALK_H,WHITE);
+  tft.setCursor(TALK_BEGIN,TALK_R2+TEXT_O);
+  tft.print("I watched white vent");
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R2);
+  
+  tft.fillRect(TALK_O,TALK_R3,SCREEN_W-25,TALK_H,WHITE);
+  tft.setCursor(TALK_BEGIN,TALK_R3+TEXT_O);
+  tft.print("ryan killed on cams");
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R3);
+
 
   
 }
@@ -120,6 +135,82 @@ void draw_head(uint16_t x, uint16_t y) {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   };
+  boolean gray_mat[16][16] = 
+  {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  };
+  boolean dark_gray_mat[16][16] = 
+  {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  };
+  boolean light_gray_mat[16][16] = 
+  {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  };
+  boolean color_mat[16][16] = 
+  {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+    {0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  };
 
   int16_t e_row = 0;
   for (int16_t row=0;row<16;row++) {
@@ -130,7 +221,27 @@ void draw_head(uint16_t x, uint16_t y) {
         tft.drawPixel(x+e_row+1,y+e_col,BLACK);
         tft.drawPixel(x+e_row+1,y+e_col+1,BLACK);
         tft.drawPixel(x+e_row,y+e_col+1,BLACK);       
-      }
+      } else if (gray_mat[col][row]) {
+        tft.drawPixel(x+e_row,y+e_col,LT_GRAY);
+        tft.drawPixel(x+e_row+1,y+e_col,LT_GRAY);
+        tft.drawPixel(x+e_row+1,y+e_col+1,LT_GRAY);
+        tft.drawPixel(x+e_row,y+e_col+1,LT_GRAY);       
+      } /*else if (light_gray_mat[col][row]) {
+        tft.drawPixel(x+e_row,y+e_col,LT_GRAY);
+        tft.drawPixel(x+e_row+1,y+e_col,LT_GRAY);
+        tft.drawPixel(x+e_row+1,y+e_col+1,LT_GRAY);
+        tft.drawPixel(x+e_row,y+e_col+1,LT_GRAY);       
+      }*/ else if (dark_gray_mat[col][row]) {
+        tft.drawPixel(x+e_row,y+e_col,DK_GRAY);
+        tft.drawPixel(x+e_row+1,y+e_col,DK_GRAY);
+        tft.drawPixel(x+e_row+1,y+e_col+1,DK_GRAY);
+        tft.drawPixel(x+e_row,y+e_col+1,DK_GRAY);       
+      } /*else if (color_mat[col][row]) {
+        tft.drawPixel(x+e_row,y+e_col,RED);
+        tft.drawPixel(x+e_row+1,y+e_col,RED);
+        tft.drawPixel(x+e_row+1,y+e_col+1,RED);
+        tft.drawPixel(x+e_row,y+e_col+1,RED);       
+      }*/
       e_col = e_col +2;
     }
     e_row = e_row+2;
