@@ -27,17 +27,12 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
-#define nORANGE  0xA233
+#define ORANGE  0xA233
 #define LT_GRAY 0xC618
 #define DK_GRAY 0x7BEF
 #define GRAY    0x7BEF
 
 #define TALK_W  10
-
-#define BUTTON_COL1 10
-#define BUTTON_ROW1 10
-#define BUTTON_H    10
-#define BUTTON_W    10
 
 #define SCREEN_H    240
 #define SCREEN_W    320
@@ -54,6 +49,13 @@
 
 #define TEXT_O  17
 #define HEAD_O  10
+
+#define BUTTON_Y   154
+#define BUTTON_X1   85
+#define BUTTON_X2  165
+#define BUTTON_H    70
+
+
 //Setup TFT shield and touchscreen
 Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
@@ -75,20 +77,22 @@ void setup() {
   tft.setTextColor(BLACK); // Text color
   tft.setTextSize(2);
   tft.print("yo ryan sus bro"); // Text above the button
-  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R1);
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R1, BLUE);
+  //draw_color(HEAD_OFFS_X,HEAD_O+TALK_R1,RED);
 
   tft.fillRect(TALK_O,TALK_R2,SCREEN_W-25,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R2+TEXT_O);
   tft.print("I watched white vent");
-  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R2);
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R2, YELLOW);
   
   tft.fillRect(TALK_O,TALK_R3,SCREEN_W-25,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R3+TEXT_O);
   tft.print("ryan killed on cams");
-  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R3);
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R3, RED);
 
-
-  
+  // Draw buttons
+  tft.fillRect(BUTTON_X1,BUTTON_Y,BUTTON_H,BUTTON_H,WHITE);
+  tft.fillRect(BUTTON_X2,BUTTON_Y,BUTTON_H,BUTTON_H,WHITE);
 }
 
 
@@ -103,8 +107,13 @@ void loop() {
     
     pinMode(XM, OUTPUT);
     pinMode(YP, OUTPUT);
-    if (p.x > BUTTON_COL1 && p.x < (BUTTON_COL1+BUTTON_W) &&
-        p.y > BUTTON_ROW1 && p.y < (BUTTON_ROW1+BUTTON_H)) {
+    if (p.x > BUTTON_X1 && p.x < (BUTTON_X1+BUTTON_H) &&
+        p.y > BUTTON_Y && p.y < (BUTTON_Y+BUTTON_H)) {
+      // Button was pressed
+      
+    }
+    if (p.x > BUTTON_X2 && p.x < (BUTTON_X2+BUTTON_H) &&
+        p.y > BUTTON_Y && p.y < (BUTTON_Y+BUTTON_H)) {
       // Button was pressed
       
     }
@@ -114,7 +123,7 @@ void loop() {
   }
 }
 
-void draw_head(uint16_t x, uint16_t y) {
+void draw_head(uint16_t x, uint16_t y, uint32_t color_in) {
   // Draw row by row
   boolean black_mat[16][16] = 
   {
@@ -192,16 +201,16 @@ void draw_head(uint16_t x, uint16_t y) {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   };
-  boolean color_mat[16][16] = 
+  boolean diff_mat[16][16] = 
   {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
@@ -210,6 +219,12 @@ void draw_head(uint16_t x, uint16_t y) {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  };
+  boolean diff_mat_t[3][16] = 
+  {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
   };
 
   int16_t e_row = 0;
@@ -236,18 +251,34 @@ void draw_head(uint16_t x, uint16_t y) {
         tft.drawPixel(x+e_row+1,y+e_col,DK_GRAY);
         tft.drawPixel(x+e_row+1,y+e_col+1,DK_GRAY);
         tft.drawPixel(x+e_row,y+e_col+1,DK_GRAY);       
-      } /*else if (color_mat[col][row]) {
-        tft.drawPixel(x+e_row,y+e_col,RED);
-        tft.drawPixel(x+e_row+1,y+e_col,RED);
-        tft.drawPixel(x+e_row+1,y+e_col+1,RED);
-        tft.drawPixel(x+e_row,y+e_col+1,RED);       
-      }*/
+      } else if (diff_mat[col][row]) {
+        tft.drawPixel(x+e_row,y+e_col,color_in);
+        tft.drawPixel(x+e_row+1,y+e_col,color_in);
+        tft.drawPixel(x+e_row+1,y+e_col+1,color_in);
+        tft.drawPixel(x+e_row,y+e_col+1,color_in);       
+      }
       e_col = e_col +2;
     }
     e_row = e_row+2;
   }
 
+  e_row = 0;
+  for (int16_t row=0;row<16;row++) {
+    int16_t e_col = 0;
+    for (int16_t col=0; col<3; col++) {
+      if (diff_mat_t[col][row]) {
+        tft.drawPixel(x+e_row,y+e_col,color_in);
+        tft.drawPixel(x+e_row+1,y+e_col,color_in);
+        tft.drawPixel(x+e_row+1,y+e_col+1,color_in);
+        tft.drawPixel(x+e_row,y+e_col+1,color_in);       
+      }
+      e_col = e_col +2;
+    }
+    e_row = e_row+2;
+  }
 }
+
+
 
 
 
