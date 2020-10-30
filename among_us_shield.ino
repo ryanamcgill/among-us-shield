@@ -62,6 +62,34 @@
 #define DIAM_LIM    3
 #define DEAD_DELAY 10000
 
+const int NUM_SAYINGS = 7;
+const int MAX_SIZE    = 22;
+const int NUM_COLORS  = 5;
+
+
+char sayings [NUM_SAYINGS][MAX_SIZE]{
+  "yo ryan sus bro",
+  "I watched white vent",
+  "Ryan killed on cams",
+  "where was white?",
+  "ryan was in nav",
+  "white faked tasks",
+  "ryan sus"
+};
+
+int sayings_inds [NUM_SAYINGS] {
+  0,1,2,3,4,5,6
+};
+
+
+uint32_t colors[] {
+  RED,
+  YELLOW,
+  CYAN,
+  GREEN,
+  BLUE
+};
+
 //Setup TFT shield and touchscreen
 Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
@@ -112,32 +140,59 @@ void loop() {
 }
 
 void main_screen() {
+  // Randomize sayings, colors
+  randomize();
+  int i0 = sayings_inds[0];
+  int i1 = sayings_inds[1];
+  int i2 = sayings_inds[2];
   tft.fillScreen(BLACK); // Background screen
   tft.fillRect(TALK_O,TALK_R1,SCREEN_W-25,TALK_H,WHITE);
   //tft.drawRect(TALK_O,TALK_R1,SCREEN_W-20,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R1+TEXT_O);
   tft.setTextColor(BLACK); // Text color
   tft.setTextSize(2);
-  tft.print("yo ryan sus bro"); // Text above the button
-  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R1, BLUE);
-  //draw_color(HEAD_OFFS_X,HEAD_O+TALK_R1,RED);
+  tft.print(sayings[i0]); // Text above the button
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R1, colors[0]);
+  //delay(1000);
 
   tft.fillRect(TALK_O,TALK_R2,SCREEN_W-25,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R2+TEXT_O);
-  tft.print("I watched white vent");
-  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R2, YELLOW);
-  
+  tft.print(sayings[i1]);
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R2, colors[1]);
+  //delay(1000);
+
   tft.fillRect(TALK_O,TALK_R3,SCREEN_W-25,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R3+TEXT_O);
-  tft.print("ryan killed on cams");
-  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R3, RED);
-
+  tft.print(sayings[i2]);
+  draw_head(HEAD_OFFS_X,HEAD_O+TALK_R3, colors[2]);
+  //delay(1000);
   // Draw buttons
   tft.fillRect(BUTTON_X1,BUTTON_Y,BUTTON_H,BUTTON_H,WHITE);
   tft.fillRect(BUTTON_X2,BUTTON_Y,BUTTON_H,BUTTON_H,WHITE);
+
   draw_mark1(BUTTON_X1,BUTTON_Y);
   draw_mark2(BUTTON_X2,BUTTON_Y);
   draw_mark3(BUTTON_X2,BUTTON_Y);
+}
+
+void randomize() {
+  const int cnt = sizeof(colors) / sizeof(colors[0]);
+  for (int i=0; i < cnt; i++) {
+    int n = random(0,cnt);
+    uint32_t temp = colors[n];
+    colors[n] = colors[i];
+    colors[i] = temp;
+  }
+
+  // Is there a better way? Yes. Will I change it? No.
+  const int cnt2 = sizeof(sayings_inds) / sizeof(sayings_inds[0]);
+  for (int j = 0; j < cnt2; j++) {
+    int r = random(0,cnt2); 
+    int temp;
+    temp = sayings_inds[j];
+    sayings_inds[j] = sayings_inds[r];
+    sayings_inds[r] = temp;
+  }
 }
 
 void draw_head(uint16_t x, uint16_t y, uint32_t color_in) {
