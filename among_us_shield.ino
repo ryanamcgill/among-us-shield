@@ -119,17 +119,26 @@ void loop() {
     
     pinMode(XM, OUTPUT);
     pinMode(YP, OUTPUT);
-    if (p.x > BUTTON_X1 && p.x < (BUTTON_X1+BUTTON_H) &&
-        p.y > BUTTON_Y && p.y < (BUTTON_Y+BUTTON_H)) {
+    if (p.x > (BUTTON_X1) && p.x < (BUTTON_X1+BUTTON_H) &&
+        p.y > (10) && p.y < (80)) {
       // Yes was pressed
-      dead_screen(true);
+      dead_screen(false);
+      tft.setTextColor(WHITE);
+      tft.setTextSize(2);
+      tft.setCursor(70,100);
+      tft.print("Ryan");
+      //tft.drawChar(90,100,'w',WHITE,0,2);
       delay(DEAD_DELAY);
       main_screen();
     }
     if (p.x > BUTTON_X2 && p.x < (BUTTON_X2+BUTTON_H) &&
-        p.y > BUTTON_Y && p.y < (BUTTON_Y+BUTTON_H)) {
+        p.y > 10 && p.y < (80)) {
       // No was pressed
-      dead_screen(false);
+      dead_screen(true);
+      tft.setTextColor(WHITE);
+      tft.setTextSize(2);
+      tft.setCursor(70,100);
+      tft.print("Ryan");
       delay(DEAD_DELAY);
       main_screen();
     }
@@ -141,7 +150,14 @@ void loop() {
 
 void main_screen() {
   // Randomize sayings, colors
-  randomize();
+  //randomize();
+  const int cnt = 5;
+  for (int i=0; i < cnt; i++) {
+    int n = random(0,cnt);
+    uint32_t temp = colors[n];
+    colors[n] = colors[i];
+    colors[i] = temp;
+  }
   int i0 = sayings_inds[0];
   int i1 = sayings_inds[1];
   int i2 = sayings_inds[2];
@@ -175,13 +191,7 @@ void main_screen() {
 }
 
 void randomize() {
-  const int cnt = sizeof(colors) / sizeof(colors[0]);
-  for (int i=0; i < cnt; i++) {
-    int n = random(0,cnt);
-    uint32_t temp = colors[n];
-    colors[n] = colors[i];
-    colors[i] = temp;
-  }
+
 
   // Is there a better way? Yes. Will I change it? No.
   /*
@@ -502,11 +512,12 @@ void draw_mark3(uint16_t x, uint16_t y) {
 void dead_screen(boolean box_press) {
   tft.fillScreen(BLACK); // Background screen
   // Get random coords and diamaters
-
   for (int16_t i = 0; i<NUM_STARS; i++) {
     int16_t x = random(SCREEN_W);
     int16_t y = random(SCREEN_H);
     int16_t diam = random(DIAM_LIM)+1;
     tft.fillCircle(x, y, diam, WHITE);
-  }   
+  }
+  
+
 }
