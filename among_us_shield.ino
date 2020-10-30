@@ -147,23 +147,22 @@ void main_screen() {
   int i2 = sayings_inds[2];
   tft.fillScreen(BLACK); // Background screen
   tft.fillRect(TALK_O,TALK_R1,SCREEN_W-25,TALK_H,WHITE);
-  //tft.drawRect(TALK_O,TALK_R1,SCREEN_W-20,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R1+TEXT_O);
   tft.setTextColor(BLACK); // Text color
   tft.setTextSize(2);
-  tft.print(sayings[i0]); // Text above the button
+  tft.print("ryan sus"); // Text above the button
   draw_head(HEAD_OFFS_X,HEAD_O+TALK_R1, colors[0]);
   //delay(1000);
 
   tft.fillRect(TALK_O,TALK_R2,SCREEN_W-25,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R2+TEXT_O);
-  tft.print(sayings[i1]);
+  tft.print("I saw him vent");
   draw_head(HEAD_OFFS_X,HEAD_O+TALK_R2, colors[1]);
   //delay(1000);
 
   tft.fillRect(TALK_O,TALK_R3,SCREEN_W-25,TALK_H,WHITE);
   tft.setCursor(TALK_BEGIN,TALK_R3+TEXT_O);
-  tft.print(sayings[i2]);
+  tft.print("Ryan killed on cams");
   draw_head(HEAD_OFFS_X,HEAD_O+TALK_R3, colors[2]);
   //delay(1000);
   // Draw buttons
@@ -185,6 +184,7 @@ void randomize() {
   }
 
   // Is there a better way? Yes. Will I change it? No.
+  /*
   const int cnt2 = sizeof(sayings_inds) / sizeof(sayings_inds[0]);
   for (int j = 0; j < cnt2; j++) {
     int r = random(0,cnt2); 
@@ -192,7 +192,7 @@ void randomize() {
     temp = sayings_inds[j];
     sayings_inds[j] = sayings_inds[r];
     sayings_inds[r] = temp;
-  }
+  }*/
 }
 
 void draw_head(uint16_t x, uint16_t y, uint32_t color_in) {
